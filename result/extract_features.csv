@@ -1,0 +1,13 @@
+,Test,Result,Risk,Uint,Normal Value
+0,WBC,15400.0,H,cumm,4000-11000
+1,RBC,3.89,L,Mila,4-5
+2,Hemoglobin,10.8,,Let,12-16
+3,Hematocrit,32.2,,ij,%
+4,MCV,82.8,,bi,78-100
+5,MCH,27.8,,Be,26-32
+6,MCHC,27.8,,%,SI-I8
+7,Platelets,281.0,,1000/L,130-4350
+0,HDL,43.0,,mg/dl,>35
+1,LDL,89.1,,mg/dl,-
+2,SGOT(AST),15.0,,IU/L,0-31
+3,SGPT(ALT),10.0,,10,IU/L
