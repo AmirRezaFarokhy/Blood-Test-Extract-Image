@@ -1,6 +1,10 @@
 # Blood-Test-Extract-Image
 In this project, by taking a photo of the person's blood test results, and taking important features from the photo, extracting them and converting them to a csv file. We want to use this created file for disease predictions.
 
+## Results
+![Screenshot from 2023-04-28 19-30-26](https://user-images.githubusercontent.com/113052872/235197308-25f4136f-a33c-4626-be87-02b56470a146.png)
+
+
 ### Requirements
 Running `Blood-Test-Extract` requires:
 * Python 3.10.4
