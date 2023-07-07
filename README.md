@@ -5,24 +5,10 @@ In this project, by taking a photo of the person's blood test results, and takin
 ![Screenshot from 2023-04-28 19-30-26](https://user-images.githubusercontent.com/113052872/235197308-25f4136f-a33c-4626-be87-02b56470a146.png)
 
 
-### Requirements
-Running `Blood-Test-Extract` requires:
-* Python 3.10.4
-* numpy 1.22.3
-* pandas 1.4.2
-* PIL 9.2.0
-* pytesseract 0.3.10
-* bs4 4.11.1
+### Install The requirements file
 
-### Installation
-In order to test the script please run the following commands:
 ```sh
-# install numpy
-pip3 install numpy
-# install matplotlib
-pip3 install beautifulsoup4
-# install pandas
-pip3 install pandas
+pip3 install -r requirements.txt
 ```
 
 ### Install pytesseract
