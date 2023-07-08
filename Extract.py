@@ -4,6 +4,11 @@ import pytesseract
 from PIL import Image
 
 
+class PreprocessingTextFromImage:
+	pass
+
+
+
 class FeatuesMatching:
 
 	def __init__(self, hematology, differential):
