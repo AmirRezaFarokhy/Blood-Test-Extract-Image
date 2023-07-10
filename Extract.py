@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import pytesseract
+from pytesseract import Output
 from PIL import Image
 import cv2 
 import imutils
@@ -11,6 +12,7 @@ import matplotlib.pyplot as plt
 class PreprocessingTextFromImage:
 
 	def __init__(self, image_path, chunk_w, chunk_h):
+		self.check_key_value = ["test", "testname", "result"]
 		self.img = cv2.imread(image_path)
 		self.chunk_w = chunk_w
 		self.chunk_h = chunk_h
@@ -24,29 +26,39 @@ class PreprocessingTextFromImage:
 			
 
 	def CountingTestText(self):
-		check_key_value = ["test", "testname"]
 		count = 0
-		for index, wigth in enumerate(range(0, self.img.shape[0], self.slice_w)):
+		for wigth in range(0, self.img.shape[0], self.slice_w):
 			slice_img = self.img[wigth:wigth+self.slice_w, 0:self.slice_h]
 			slice_text = pytesseract.image_to_string(slice_img).split('\n')
 			for text in slice_text:
 				text = text.strip().split(' ')[0]
 				text = re.sub(r'[^a-zA-Z]+', '', text)
-				if text.lower() in check_key_value:
+				if text.lower() in self.check_key_value:
 					count += 1
 		return count
 
 
+	def ShuftingImage(self, image):
+		epsilon_decay = 20
+		slice_data = pytesseract.image_to_data(image, 
+					   							 output_type=Output.DICT)
+		for i in range(len(slice_data['level'])):
+			if slice_data['text'][i].lower() in self.check_key_value:
+				X, y = slice_data['top'][i] - epsilon_decay, slice_data['left'][i] - epsilon_decay
+				image = image[X:, y:]
+		return image
+		
+
 	def OneTestText(self, ):
 		pass 
 
+
 	def SeveralTestText(self):
-		plt.figure(figsize=(12, 14)) 
 		index_slice = 0
 		informations = []
 		slice_w = self.img.shape[0] // self.chunk_w
 		slice_h = self.img.shape[1] // self.chunk_h
-		check_key_value = ["test", "testname"]
+		
 		noises = 50
 		try:
 			for index, wigth in enumerate(range(0, self.img.shape[0], slice_w)):
@@ -57,46 +69,60 @@ class PreprocessingTextFromImage:
 					text = re.sub(r'[^a-zA-Z]+', '', text)
 					image_get = []
 					height = 0
-					if text.lower() in check_key_value:
+					if text.lower() in self.check_key_value:
 						if wigth!=0:
 							for i in range(self.chunk_h-1):
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]
+									filter_image_data = self.ShuftingImage(filter_image_data)
+									
 									height += slice_h 
 								else:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height:slice_h+noises]
+									filter_image_data = self.ShuftingImage(filter_image_data)
 									height += slice_h 
 
-								if filter_image_data.shape[1]>100:
+								if filter_image_data.shape[1]>50:
 									image_get.append(filter_image_data)
-									plt.subplot(3, 4, index_slice+1)
 									index_slice += 1
-									plt.imshow(filter_image_data)
 									
 							informations.append(image_get)
 
 						else:
-							filter_image_data = self.img[wigth:wigth+slice_w, 
-													height:slice_h+noises]
-							height += slice_h 
-							if filter_image_data.shape[1]>100:
-								image_get.append(filter_image_data)
-								plt.subplot(4, 4, index_slice+1)
-								index_slice += 1
-								plt.imshow(filter_image_data)
-			plt.show()
+							for i in range(self.chunk_h-1):
+								if height!=0:
+									filter_image_data = self.img[wigth:wigth+slice_w, 
+															height-noises:slice_h+height]
+									filter_image_data = self.ShuftingImage(filter_image_data)
+									height += slice_h 
+								else:
+									filter_image_data = self.img[wigth:wigth+slice_w, 
+															height:slice_h+noises]
+									filter_image_data = self.ShuftingImage(filter_image_data)
+									height += slice_h 
+
+								if filter_image_data.shape[1]>100:
+									image_get.append(filter_image_data)
+									index_slice += 1
+
+							informations.append(image_get)
 			return informations
 
 		except Exception as error:
 			print(f"We Can't do this becaus {error}")
 
 
+	def ExtractingFeatures():
+		pass
+
+
+
 	def ShowBoxesDetected(self, image):
 		plt.figure(figsize=(12, 14))
 		d = pytesseract.image_to_data(image, 
-									  output_type=pytesseract.Output.DICT)
+									  output_type=Output.DICT)
 		n_boxes = len(d['level'])
 		for i in range(n_boxes):
 			if(d['text'][i] != ""):

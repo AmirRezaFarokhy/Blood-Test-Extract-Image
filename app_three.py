@@ -16,4 +16,4 @@ if App.CountingTestText()==1 and App.CountingTestText()>0:
 else:
     information_image = App.SeveralTestText()
 
-App.ShowBoxesDetected(information_image[2][1])
+App.ShuftingImage(information_image[3][0])
