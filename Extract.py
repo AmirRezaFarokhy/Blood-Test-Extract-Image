@@ -38,14 +38,34 @@ class PreprocessingTextFromImage:
 		return count
 
 
+	def HighestResolution(self, img, epslilon_vote):
+		img = imutils.resize(self.img, 
+								width=img.shape[0]+epslilon_vote, 
+								height=img.shape[1]+epslilon_vote)
+		return img
+
+
 	def ShuftingImage(self, image):
-		epsilon_decay = 20
+		if self.resolution:
+			image = self.HighestResolution(image, 5)
 		slice_data = pytesseract.image_to_data(image, 
-					   							 output_type=Output.DICT)
+					   						   output_type=Output.DICT)
 		for i in range(len(slice_data['level'])):
+			epsilon_decay = 20
 			if slice_data['text'][i].lower() in self.check_key_value:
-				X, y = slice_data['top'][i] - epsilon_decay, slice_data['left'][i] - epsilon_decay
-				image = image[X:, y:]
+				(X, y) = (slice_data['top'][i], 
+	      				  slice_data['left'][i])
+				if min(X, y)<=epsilon_decay:
+					epsilon_decay = min(X, y)
+					X, y = X-epsilon_decay, y-epsilon_decay
+					if slice_data['text'][i].lower()=='result':
+						print(X, y)
+					image = image[X:, y:]
+				else:
+					X, y = X-epsilon_decay, y-epsilon_decay
+					if slice_data['text'][i].lower()=='result':
+						print(X, y)
+					image = image[X:, y:]
 		return image
 		
 
@@ -53,15 +73,15 @@ class PreprocessingTextFromImage:
 		pass 
 
 
-	def SeveralTestText(self):
+	def SeveralTestText(self, resolution=False):
+		self.resolution = resolution
 		index_slice = 0
 		informations = []
 		slice_w = self.img.shape[0] // self.chunk_w
 		slice_h = self.img.shape[1] // self.chunk_h
-		
 		noises = 50
 		try:
-			for index, wigth in enumerate(range(0, self.img.shape[0], slice_w)):
+			for wigth in range(0, self.img.shape[0], slice_w):
 				slice_img = self.img[wigth:wigth+slice_w, 0:slice_h]
 				slice_text = pytesseract.image_to_string(slice_img).split('\n')
 				for text in slice_text:
