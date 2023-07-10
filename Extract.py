@@ -33,7 +33,7 @@ class PreprocessingTextFromImage:
 			for text in slice_text:
 				text = text.strip().split(' ')[0]
 				text = re.sub(r'[^a-zA-Z]+', '', text)
-				if text.lower() in self.check_key_value:
+				if text.lower() in self.check_key_value[:-1]:
 					count += 1
 		return count
 
@@ -45,13 +45,14 @@ class PreprocessingTextFromImage:
 		return img
 
 
-	def ShuftingImage(self, image):
+	def ShiftingImage(self, image):
 		if self.resolution:
 			image = self.HighestResolution(image, 5)
+
 		slice_data = pytesseract.image_to_data(image, 
 					   						   output_type=Output.DICT)
 		for i in range(len(slice_data['level'])):
-			epsilon_decay = 20
+			epsilon_decay = 0
 			if slice_data['text'][i].lower() in self.check_key_value:
 				(X, y) = (slice_data['top'][i], 
 	      				  slice_data['left'][i])
@@ -69,8 +70,16 @@ class PreprocessingTextFromImage:
 		return image
 		
 
-	def OneTestText(self, ):
-		pass 
+	def OneTestText(self, resolution=False):
+		self.resolution = resolution
+		for wigth in range(0, self.img.shape[0], self.slice_w):
+			slice_img = self.img[wigth:wigth+self.slice_w, 0:self.slice_h]
+			slice_text = pytesseract.image_to_string(slice_img).split('\n')
+			for text in slice_text:
+				text = text.strip().split(' ')[0]
+				text = re.sub(r'[^a-zA-Z]+', '', text)
+				if text.lower() in self.check_key_value[:-1]:
+					pass
 
 
 	def SeveralTestText(self, resolution=False):
@@ -95,13 +104,13 @@ class PreprocessingTextFromImage:
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]
-									filter_image_data = self.ShuftingImage(filter_image_data)
+									filter_image_data = self.ShiftingImage(filter_image_data)
 									
 									height += slice_h 
 								else:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height:slice_h+noises]
-									filter_image_data = self.ShuftingImage(filter_image_data)
+									filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 
 								if filter_image_data.shape[1]>50:
@@ -115,12 +124,12 @@ class PreprocessingTextFromImage:
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]
-									filter_image_data = self.ShuftingImage(filter_image_data)
+									filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 								else:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height:slice_h+noises]
-									filter_image_data = self.ShuftingImage(filter_image_data)
+									filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 
 								if filter_image_data.shape[1]>100:
@@ -134,9 +143,20 @@ class PreprocessingTextFromImage:
 			print(f"We Can't do this becaus {error}")
 
 
-	def ExtractingFeatures():
-		pass
-
+	def ExtractingFeaturesSeveralTest(self, information_image):
+		for image_match in information_image:
+			for image in image_match:
+				try:
+					text = pytesseract.image_to_string(image)
+					text_edited = re.sub(r'[^a-zA-Z]+', ' ', text).split(' ')
+					for text_add in text_edited:
+						if text_add.lower() in self.check_key_value:
+							text = text.strip().split('\n')
+							text = [t for t in text if t!='']
+							text = [t for t in text if t!=' ']
+							print(text)
+				except Exception as error:
+					print(f"We Can't do this becaus {error}")
 
 
 	def ShowBoxesDetected(self, image):
