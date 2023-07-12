@@ -1,10 +1,15 @@
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt 
+import pytesseract
 import os 
+import sys
 import cv2
 
 from Extract import PreprocessingTextFromImage
+
+if sys.platform[:3]=='win':
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
 IMG_PATH = 'img_test/img_3.jpg'
 CHUNK_W = 4

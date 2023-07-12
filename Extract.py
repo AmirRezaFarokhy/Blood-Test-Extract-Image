@@ -49,37 +49,70 @@ class PreprocessingTextFromImage:
 		if self.resolution:
 			image = self.HighestResolution(image, 5)
 
-		slice_data = pytesseract.image_to_data(image, 
-					   						   output_type=Output.DICT)
-		for i in range(len(slice_data['level'])):
-			epsilon_decay = 0
-			if slice_data['text'][i].lower() in self.check_key_value:
-				(X, y) = (slice_data['top'][i], 
-	      				  slice_data['left'][i])
-				if min(X, y)<=epsilon_decay:
-					epsilon_decay = min(X, y)
-					X, y = X-epsilon_decay, y-epsilon_decay
-					if slice_data['text'][i].lower()=='result':
-						print(X, y)
-					image = image[X:, y:]
-				else:
-					X, y = X-epsilon_decay, y-epsilon_decay
-					if slice_data['text'][i].lower()=='result':
-						print(X, y)
-					image = image[X:, y:]
+		if self.CountingTestText()>1:
+			slice_data = pytesseract.image_to_data(image, 
+												output_type=Output.DICT)
+			for i in range(len(slice_data['level'])):
+				epsilon_decay = 0
+				if slice_data['text'][i].lower() in self.check_key_value:
+					(X, y) = (slice_data['top'][i], 
+							slice_data['left'][i])
+					if min(X, y)<=epsilon_decay:
+						epsilon_decay = min(X, y)
+						X, y = X-epsilon_decay, y-epsilon_decay
+						if slice_data['text'][i].lower()=='result':
+							print(X, y)
+						image = image[X:, y:]
+					else:
+						X, y = X-epsilon_decay, y-epsilon_decay
+						if slice_data['text'][i].lower()=='result':
+							print(X, y)
+						image = image[X:, y:]
+
+		else:
+			for wigth in range(0, self.img.shape[0], self.slice_w):
+				slice_img = self.img[wigth:wigth+self.slice_w, 0:self.slice_h]
+				slice_text = pytesseract.image_to_string(slice_img).split('\n')
+				for text in slice_text:
+					text = text.strip().split(' ')[0]
+					text = re.sub(r'[^a-zA-Z]+', '', text)
+					if text.lower() in self.check_key_value[:-1]:
+						image = self.img[wigth:, :]
+
 		return image
 		
 
 	def OneTestText(self, resolution=False):
+
+		def Checking(list_words, information):
+			for word in list_words[:-4]:
+				if len(word.split(' '))>=3:
+					word = word.split(' ')
+					check_word_test = re.sub(r'[^a-zA-Z]+', '', word[0])
+					check_word_res = re.sub(r'[^a-zA-Z]+', '', word[1])
+					if check_word_test not in self.check_key_value and word[0] not in information["Test"]:
+						informations['Test'].append([word[0], word[1]])
+						if check_word_res not in self.check_key_value:
+							informations['Result'].append([word[2], word[3]])
+			return information
+
 		self.resolution = resolution
-		for wigth in range(0, self.img.shape[0], self.slice_w):
-			slice_img = self.img[wigth:wigth+self.slice_w, 0:self.slice_h]
-			slice_text = pytesseract.image_to_string(slice_img).split('\n')
-			for text in slice_text:
-				text = text.strip().split(' ')[0]
-				text = re.sub(r'[^a-zA-Z]+', '', text)
-				if text.lower() in self.check_key_value[:-1]:
-					pass
+		filter_image = self.ShiftingImage(self.img)
+		informations = {'Test':[], "Result":[]}
+		for wigth in range(0, filter_image.shape[0], self.slice_w):
+			slice_img_1 = filter_image[wigth:wigth+self.slice_w, :] 
+			filter_img_1 = pytesseract.image_to_string(slice_img_1).split('\n')
+			informations = Checking(filter_img_1, informations)
+
+			slice_img_2 = filter_image[wigth:, :]
+			filter_img_2 = pytesseract.image_to_string(slice_img_2).split('\n')
+			informations = Checking(filter_img_2, informations)
+
+			show_boxes = self.ShowBoxesDetected(slice_img_1)
+			cv2.imshow("image boxes", show_boxes)
+			cv2.waitKey(0)
+			
+		return informations
 
 
 	def SeveralTestText(self, resolution=False):
@@ -160,7 +193,6 @@ class PreprocessingTextFromImage:
 
 
 	def ShowBoxesDetected(self, image):
-		plt.figure(figsize=(12, 14))
 		d = pytesseract.image_to_data(image, 
 									  output_type=Output.DICT)
 		n_boxes = len(d['level'])

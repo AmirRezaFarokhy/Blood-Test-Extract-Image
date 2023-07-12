@@ -3,9 +3,13 @@ import numpy as np
 from PIL import Image
 import pytesseract
 import os
+import sys
 
 from Extract import FeatuesMatching
 
+
+if sys.platform[:3]=='win':
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
 IMPORTANT_NAMES = ['Hematology', 'Differential']
 

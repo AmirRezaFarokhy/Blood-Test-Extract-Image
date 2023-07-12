@@ -3,8 +3,13 @@ import pandas as pd
 from PIL import Image
 import pytesseract
 import os
+import sys
 
 from Extract import FeaturesGetValue
+
+
+if sys.platform[:3]=='win':
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
 STR_VALUE_DICT = {"Negetive":0, "Positive":1}
 
