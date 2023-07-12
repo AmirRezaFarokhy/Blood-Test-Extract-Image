@@ -93,9 +93,10 @@ class PreprocessingTextFromImage:
 					if check_word_test not in self.check_key_value and word[0] not in information["Test"]:
 						informations['Test'].append([word[0], word[1]])
 						if check_word_res not in self.check_key_value:
-							informations['Result'].append([word[2], word[3]])
+							informations['Result'].append([word[1], word[2]])
 			return information
-
+		
+		print('Find')
 		self.resolution = resolution
 		filter_image = self.ShiftingImage(self.img)
 		informations = {'Test':[], "Result":[]}
@@ -110,10 +111,8 @@ class PreprocessingTextFromImage:
 
 			show_boxes = self.ShowBoxesDetected(slice_img_1)
 			cv2.imshow("image boxes", show_boxes)
-			cv2.waitKey(0)
-			
+			cv2.waitKey(0)	
 		return informations
-
 
 	def SeveralTestText(self, resolution=False):
 		self.resolution = resolution
@@ -133,7 +132,7 @@ class PreprocessingTextFromImage:
 					height = 0
 					if text.lower() in self.check_key_value:
 						if wigth!=0:
-							for i in range(self.chunk_h-1):
+							for _ in range(self.chunk_h-1):
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]

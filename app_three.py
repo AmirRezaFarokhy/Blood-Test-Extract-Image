@@ -20,7 +20,8 @@ App = PreprocessingTextFromImage(IMG_PATH, CHUNK_W, CHUNK_H)
 if App.CountingTestText()==1 and App.CountingTestText()>0:
     print("Start With One...")
     #information_image = App.OneTestText(resolution=False)
-    App.OneTestText()
+    info = App.OneTestText()
+    print(info)
 else:
     print("Start With Several...")
     information_image = App.SeveralTestText()
