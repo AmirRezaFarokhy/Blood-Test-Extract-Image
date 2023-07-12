@@ -21,7 +21,13 @@ if App.CountingTestText()==1 and App.CountingTestText()>0:
     print("Start With One...")
     #information_image = App.OneTestText(resolution=False)
     info = App.OneTestText()
-    print(info)
+    df = pd.DataFrame(columns=['Test', 'Result'])
+    # print(info['Test'], len(info['Test']))
+    # print('#############################')
+    # print(info['Result'], len(info['Result']))
+    df['Test'] = info['Test']
+    df['Result'] = info['Result']
+    print(df)
 else:
     print("Start With Several...")
     information_image = App.SeveralTestText()

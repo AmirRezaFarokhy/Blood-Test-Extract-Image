@@ -85,18 +85,17 @@ class PreprocessingTextFromImage:
 	def OneTestText(self, resolution=False):
 
 		def Checking(list_words, information):
-			for word in list_words[:-4]:
-				if len(word.split(' '))>=3:
+			for word in list_words[:-5]:
+				if len(word.split(' '))>=4:
 					word = word.split(' ')
-					check_word_test = re.sub(r'[^a-zA-Z]+', '', word[0])
+					word[0] = re.sub(r'[^a-zA-Z]+', '', word[0])
 					check_word_res = re.sub(r'[^a-zA-Z]+', '', word[1])
-					if check_word_test not in self.check_key_value and word[0] not in information["Test"]:
-						informations['Test'].append([word[0], word[1]])
+					if word[0] not in self.check_key_value and word[0] not in information["Test"]:
+						informations['Test'].append(word[0])
 						if check_word_res not in self.check_key_value:
-							informations['Result'].append([word[1], word[2]])
+							informations['Result'].append(word[1])
 			return information
 		
-		print('Find')
 		self.resolution = resolution
 		filter_image = self.ShiftingImage(self.img)
 		informations = {'Test':[], "Result":[]}
@@ -109,9 +108,9 @@ class PreprocessingTextFromImage:
 			filter_img_2 = pytesseract.image_to_string(slice_img_2).split('\n')
 			informations = Checking(filter_img_2, informations)
 
-			show_boxes = self.ShowBoxesDetected(slice_img_1)
-			cv2.imshow("image boxes", show_boxes)
-			cv2.waitKey(0)	
+			# show_boxes = self.ShowBoxesDetected(slice_img_2)
+			# cv2.imshow("image boxes", show_boxes)
+			# cv2.waitKey(0)	
 		return informations
 
 	def SeveralTestText(self, resolution=False):
