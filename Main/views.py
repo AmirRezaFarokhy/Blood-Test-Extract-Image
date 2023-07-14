@@ -25,7 +25,6 @@ def AnalysisBloodTest(request):
         image_data.save()
 
         # put out model to do process data
-        time.sleep(1)
         if len(IMAEG_NAME)!=0:
             App = PreprocessingTextFromImage(IMG_PATH+IMAEG_NAME[0], CHUNK_W, CHUNK_H)
             if App.CountingTestText()==1 and App.CountingTestText()>0:
@@ -60,7 +59,7 @@ def AnalysisBloodTest(request):
                     os.remove(file_path)
                     print("Images removed succesfully...")
 
-            time.sleep(1)
+            # time.sleep(1)
             return render(request=request,
                         template_name='result.html',
                         context={'result':image_data})
