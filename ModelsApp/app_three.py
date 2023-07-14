@@ -1,5 +1,4 @@
 import pandas as pd 
-import numpy as np
 import matplotlib.pyplot as plt 
 import pytesseract
 import os 
@@ -12,11 +11,13 @@ from Extract import PreprocessingTextFromImage
 if sys.platform[:3]=='win':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
-IMG_PATH = 'img_test/img_3.jpg'
+
+IMG_PATH = '/home/amir/programming/git_repo/Blood-Test-Extract-Image/media/images/'
+IMAEG_NAME = os.listdir(IMG_PATH)
 CHUNK_W = 4
 CHUNK_H = 4
 
-App = PreprocessingTextFromImage(IMG_PATH, CHUNK_W, CHUNK_H)
+App = PreprocessingTextFromImage(IMG_PATH+IMAEG_NAME[0], CHUNK_W, CHUNK_H)
 
 if App.CountingTestText()==1 and App.CountingTestText()>0:
     print("Start With One...")
@@ -45,6 +46,13 @@ else:
     plt.imshow(append_vertically[1])
     plt.show()        
     
+
+# Removing Image To Avoiding extra files
+for image in IMAEG_NAME:
+    file_path = os.path.join(IMG_PATH ,image)
+    os.remove(file_path)
+    print("Images removed succesfully...")
+
 
 
 
