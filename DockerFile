@@ -3,6 +3,8 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir core
 COPY . /core/
 WORKDIR /core
+RUN apt-get update \
+  && apt-get -y install tesseract-ocr
 RUN pip install -r requirements.txt
 EXPOSE 5000
 CMD ['python3', 'manage.py', 'runserver', '8080']
