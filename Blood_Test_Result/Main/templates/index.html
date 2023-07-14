@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+	{% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">   
+    <title>Title of your HTML page</title>
+
+</head>
+<body>
+
+		<div class="container">
+		  <div class="card">
+			<h3>Upload Files</h3>
+			<div class="drop_box">
+			  <header>
+				<h4>Select File here</h4>
+			  </header>
+
+			  <p>Files Supported: JPG, PNG</p>
+			    
+			  <form enctype="multipart/form-data" method="post" action="">
+				{% csrf_token %}  
+			  <input type="file" name="upload">
+			  <br>
+			  <button class="btn">Choose File</button>
+			  </form>
+			  
+			</div>
+			<h3>{{result}}</h3>
+		  </div>
+		  
+		</div>
+
+		
+
+	<script src="{% static '/js/javascript.js' %}"></script>
+
+</body>
+</html>
+
