@@ -3,5 +3,5 @@ pandas>=1.4.2
 PIL>=9.2.0
 pytesseract==0.3.10
 bs4==4.11.1
-opencv-python
-Django
+opencv-python==4.6.0
+Django==4.1.1
