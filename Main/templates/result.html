@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+    <head>
+    <style>
+    div.gallery {
+      margin: 5px;
+      border: 1px solid #ccc;
+      float: left;
+      width: 720px;
+      height: 720px;
+      
+    }
+    
+    div.gallery:hover {
+      border: 1px solid #777;
+    }
+    
+    div.gallery img {
+      width: 100%;
+      height: auto;
+    }
+    
+    div.desc {
+      padding: 15px;
+      text-align: center;
+    }
+    </style>
+    </head>
+    <body>
+    
+    <div class="gallery">
+      <a target="_blank" href="img_5terre.jpg">
+        <img src="{% static 'detected/result.jpg' %}" alt="We Can't process your image sorry try again..." width="1200" height="720" class="center">
+      </a>
+      <h2>Hy, your blood test was done and we are working on it very soon!!!</h2>
+    </div>
+
+    
+    </body>
+    </html> 

@@ -5,6 +5,7 @@ from pytesseract import Output
 from PIL import Image
 import cv2 
 import imutils
+import sys
 import re
 import matplotlib.pyplot as plt
 
@@ -23,6 +24,9 @@ class PreprocessingTextFromImage:
 			self.img = imutils.resize(self.img, 
 								width=self.img.shape[0]+increas_value_vote, 
 								height=self.img.shape[1]+increas_value_vote)
+			
+		if sys.platform[:3]=='win':
+			pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 			
 
 	def CountingTestText(self):

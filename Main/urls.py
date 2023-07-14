@@ -1,9 +1,8 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
-from .views import HomePage
+from .views import HomePage, AnalysisBloodTest
 
 urlpatterns = [
-    path('', HomePage, name='home')
+    path('', HomePage, name='home'),
+    path('analys/', AnalysisBloodTest, name='analys'),
 ]
 
