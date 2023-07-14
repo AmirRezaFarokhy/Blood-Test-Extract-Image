@@ -98,6 +98,7 @@ class PreprocessingTextFromImage:
 		
 		self.resolution = resolution
 		filter_image = self.ShiftingImage(self.img)
+		images = []
 		informations = {'Test':[], "Result":[]}
 		for wigth in range(0, filter_image.shape[0], self.slice_w):
 			slice_img_1 = filter_image[wigth:wigth+self.slice_w, :] 
@@ -107,11 +108,12 @@ class PreprocessingTextFromImage:
 			slice_img_2 = filter_image[wigth:, :]
 			filter_img_2 = pytesseract.image_to_string(slice_img_2).split('\n')
 			informations = Checking(filter_img_2, informations)
-
+			images.append(slice_img_2)
 			# show_boxes = self.ShowBoxesDetected(slice_img_2)
 			# cv2.imshow("image boxes", show_boxes)
 			# cv2.waitKey(0)	
-		return informations
+		return informations, images
+
 
 	def SeveralTestText(self, resolution=False):
 		self.resolution = resolution
@@ -135,13 +137,13 @@ class PreprocessingTextFromImage:
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]
-									filter_image_data = self.ShiftingImage(filter_image_data)
+									# filter_image_data = self.ShiftingImage(filter_image_data)
 									
 									height += slice_h 
 								else:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height:slice_h+noises]
-									filter_image_data = self.ShiftingImage(filter_image_data)
+									# filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 
 								if filter_image_data.shape[1]>50:
@@ -155,12 +157,12 @@ class PreprocessingTextFromImage:
 								if height!=0:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height-noises:slice_h+height]
-									filter_image_data = self.ShiftingImage(filter_image_data)
+									# filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 								else:
 									filter_image_data = self.img[wigth:wigth+slice_w, 
 															height:slice_h+noises]
-									filter_image_data = self.ShiftingImage(filter_image_data)
+									# filter_image_data = self.ShiftingImage(filter_image_data)
 									height += slice_h 
 
 								if filter_image_data.shape[1]>100:
@@ -191,11 +193,12 @@ class PreprocessingTextFromImage:
 
 
 	def ShowBoxesDetected(self, image):
+		lst_remove = ['“', '=', '+', '(Hormon']
 		d = pytesseract.image_to_data(image, 
 									  output_type=Output.DICT)
 		n_boxes = len(d['level'])
 		for i in range(n_boxes):
-			if(d['text'][i] != ""):
+			if(d['text'][i] != "") and (d['text'][i]) not in lst_remove:
 				(x, y, w, h) = (d['left'][i], 
 		    					d['top'][i], 
 								d['width'][i], 
@@ -205,9 +208,8 @@ class PreprocessingTextFromImage:
 							  (x+w, y+h), 
 		  					  (0,255,0), 2)
 
-		image = cv2.resize(image, (720, 720))
-		cv2.imshow('show boxes', image)
-		cv2.waitKey(0)
+		# image = cv2.resize(image, (720, 640))
+		return image
 
 
 class FeatuesMatching:
