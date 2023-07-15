@@ -25,10 +25,10 @@ def AnalysisBloodTest(request):
                         template_name='result.html',
                         context={'result':image_data})
         else:
-            message = 'successfully uploaded and we try to fetch data from your image...'
+            message = "We Can't work on your blood test sorry, please try again..."
             return render(request=request,
                         template_name='result.html',
                         context={'result':message})
         
-        
+
 

@@ -5,6 +5,8 @@ COPY . /core/
 WORKDIR /core
 RUN apt-get update \
   && apt-get -y install tesseract-ocr
+  && sudo apt install rabbitmq-server
+  
 RUN pip install -r requirements.txt
 EXPOSE 5000
 CMD ['python3', 'manage.py', 'runserver', '8080']

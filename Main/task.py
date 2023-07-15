@@ -5,15 +5,13 @@ from .models import ImageBloodTest
 from ModelsApp.Extract import PreprocessingTextFromImage
 import cv2
 import pandas as pd
-import time
 import os 
+
 
 @shared_task
 def UploadAndProcessingImage(IMG_PATH):
-
+    
     print('Start processing image...')
-
-    # IMG_PATH = '/home/amir/programming/git_repo/Blood-Test-Extract-Image/media/images/'
     IMG_SAVE = '/home/amir/programming/git_repo/Blood-Test-Extract-Image/Main/static/detected'
     IMAEG_NAME = os.listdir(IMG_PATH)
     CHUNK_W = 4
