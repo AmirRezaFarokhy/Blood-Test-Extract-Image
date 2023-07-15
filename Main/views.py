@@ -21,6 +21,7 @@ def AnalysisBloodTest(request):
         # Using Celery to doing image processing 
         if len(IMAEG_NAME)!=0:
             UploadAndProcessingImage(IMG_PATH)
+            request.session['image'] = 1
             return render(request=request,
                         template_name='result.html',
                         context={'result':image_data})

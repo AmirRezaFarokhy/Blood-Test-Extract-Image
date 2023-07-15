@@ -22,6 +22,7 @@ def UploadAndProcessingImage(IMG_PATH):
         print("Start With One...")
         info, images = App.OneTestText()
         img = App.ShowBoxesDetected(images[2])
+        img = img[:-200]
         df = pd.DataFrame(columns=['Test', 'Result'])
         df['Test'] = info['Test']
         df['Result'] = info['Result']
@@ -40,7 +41,7 @@ def UploadAndProcessingImage(IMG_PATH):
                 for img in append_vertically:
                     append_all.append(cv2.vconcat([img[0], img[1]]))
         
-        cv2.imwrite(f'{IMG_SAVE}/result.jpg', img)       
+        cv2.imwrite(f'{IMG_SAVE}/result.jpg', append_vertically)       
         
 
     # Removing Image To Avoiding extra files

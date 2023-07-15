@@ -28,12 +28,17 @@
     </head>
     <body>
     
-    <div class="gallery">
-      <a target="_blank" href="img_5terre.jpg">
-        <img src="{% static 'detected/result.jpg' %}" alt="We Can't process your image sorry try again..." width="1200" height="720" class="center">
-      </a>
-      <h2>Hy, your blood test was done and we are working on it very soon!!!</h2>
-    </div>
+    
+      <div class="gallery">
+        <a target="_blank" href="img_5terre.jpg">
+          <img src="{% static 'detected/result.jpg' %}" alt="We Can't process your image sorry try again..." width="1200" height="720" class="center">
+        </a>
+        {% if request.session.image %}
+        <h2>Hy, your blood test was done and we are working on it very soon!!!</h2>
+        {% endif %}
+      
+      </div>
+    
 
     
     </body>
