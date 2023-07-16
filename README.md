@@ -17,7 +17,13 @@ git clone https://github.com/AmirRezaFarokhy/Blood-Test-Extract-Image
 ## Build
 For building project and use it run this command:
 ```bash
-docker build .
+sudo docker-compose build
+```
+
+## Run Project
+For runing project and use it run this command:
+```bash
+sudo docker-compose up
 ```
 
 
