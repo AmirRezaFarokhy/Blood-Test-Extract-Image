@@ -1,8 +1,6 @@
 FROM python:3.10
 RUN apt-get update \
   && apt-get -y install tesseract-ocr
-  && sudo apt install rabbitmq-server
-  && sudo apt install redis-server
 
 ENV PYTHONUNBUFFERED 1
 RUN mkdir core

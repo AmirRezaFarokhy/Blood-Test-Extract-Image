@@ -8,7 +8,7 @@ services:
         dockerfile: ./Dockerfile
         entrypoint: server_django.sh
         volumes:
-          - static_volume:/core/django_static
+          - static_volume:/core/Main/static
         expose:
           - 8000
         environment:
@@ -23,7 +23,7 @@ services:
       dockerfile: ./Dockerfile
       entrypoint: worker_celery.sh
       volumes:
-        - static_volume:/core/django_static
+        - static_volume:/core/Main/static
         environment:
             DEBUG: "True"
             CELERY_BROKER_URL: "redis://localhost:6379/0"
