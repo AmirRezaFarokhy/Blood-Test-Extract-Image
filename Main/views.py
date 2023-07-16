@@ -3,6 +3,7 @@ from .models import ImageBloodTest
 
 from Main.task import UploadAndProcessingImage
 import os 
+import time
 
 
 def HomePage(request):
@@ -20,8 +21,8 @@ def AnalysisBloodTest(request):
 
         # Using Celery to doing image processing 
         if len(IMAEG_NAME)!=0:
-            UploadAndProcessingImage(IMG_PATH)
-            request.session['image'] = 1
+            UploadAndProcessingImage.delay(IMG_PATH)
+            time.sleep(17)
             return render(request=request,
                         template_name='result.html',
                         context={'result':image_data})

@@ -26,7 +26,8 @@ def UploadAndProcessingImage(IMG_PATH):
         df = pd.DataFrame(columns=['Test', 'Result'])
         df['Test'] = info['Test']
         df['Result'] = info['Result']
-        cv2.imwrite(f'{IMG_SAVE}/result.jpg', img) 
+        cv2.imwrite(f'{IMG_SAVE}/result_1.jpg', img) 
+        print("Image Extract succesfully...") 
     else:
         print("Start With Several...")
         information_image = App.SeveralTestText()
@@ -41,7 +42,8 @@ def UploadAndProcessingImage(IMG_PATH):
                 for img in append_vertically:
                     append_all.append(cv2.vconcat([img[0], img[1]]))
         
-        cv2.imwrite(f'{IMG_SAVE}/result.jpg', append_vertically)       
+        cv2.imwrite(f'{IMG_SAVE}/result_1.jpg', append_vertically[1])
+        print("Image Extract succesfully...")       
         
 
     # Removing Image To Avoiding extra files
@@ -50,5 +52,6 @@ def UploadAndProcessingImage(IMG_PATH):
         if os.path.exists(file_path):
             os.remove(file_path)
             print("Images removed succesfully...")
+
 
     
