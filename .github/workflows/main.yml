@@ -1,0 +1,11 @@
+name: docker-compose
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the app
+        run: docker-compose build .
+      - name: Test
+        run: docker-compose up
