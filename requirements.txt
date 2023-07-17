@@ -1,6 +1,6 @@
 numpy==1.22.3
 pandas>=1.4.2
-PIL==9.2.0
+Pillow==9.2.0
 pytesseract==0.3.10
 bs4==4.11.1
 opencv-python==4.6.0
