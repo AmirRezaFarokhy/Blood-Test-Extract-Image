@@ -2,7 +2,6 @@ version: '3.3'
 
 services:
   server:
-    image: Web_app
     container_name: BloodTestResultWeb
     build:
       context: .
@@ -19,7 +18,6 @@ services:
         CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
 
   worker:
-    image: Celery_app
     container_name: BloodTestResultCelery
     build:
       context: .
