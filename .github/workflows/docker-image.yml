@@ -17,6 +17,6 @@ jobs:
     - name: Build the Docker image
       run: docker-compose up -d
     - name: runing test 1
-      run: docker run --network container:BloodTestResultWeb
+      run: docker run -d --name BloodTestResultWeb
     - name: runing test 2
-      run: docker run --network container:BloodTestResultCelery
+      run: docker run -d --name BloodTestResultCelery
