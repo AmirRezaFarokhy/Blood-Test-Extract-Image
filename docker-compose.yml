@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: DockerFile
 
-    entrypoint: server_django.sh
+    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - static_volume:/core/Main/static
     expose:
@@ -23,7 +23,7 @@ services:
       context: .
       dockerfile: DockerFile
 
-    entrypoint: worker_celery.sh
+    command: celery -A Blood_Test_Result worker -l info
 
     volumes:
         - static_volume:/core/Main/static
