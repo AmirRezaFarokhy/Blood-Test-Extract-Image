@@ -1,43 +1,44 @@
-version: '2'
+version: '3.3'
 
 services:
   server:
-    restart: unless-stopped
-      build:
-        context: .
-        dockerfile: ./Dockerfile
-        entrypoint: server_django.sh
-        volumes:
-          - static_volume:/core/Main/static
-        expose:
-          - 8000
-        environment:
-            DEBUG: "True"
-            CELERY_BROKER_URL: "redis://localhost:6379/0"
-            CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
-
-  worker:
-    restart: unless-stopped
+  
     build:
       context: .
-      dockerfile: ./Dockerfile
-      entrypoint: worker_celery.sh
-      volumes:
-        - static_volume:/core/Main/static
-        environment:
-            DEBUG: "True"
-            CELERY_BROKER_URL: "redis://localhost:6379/0"
-            CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
+      dockerfile: Dockerfile
 
-        depends_on:
-          - server
-          - redis
+    entrypoint: server_django.sh
+    volumes:
+      - static_volume:/core/Main/static
+    expose:
+      - 8000
+    environment:
+        DEBUG: "True"
+        CELERY_BROKER_URL: "redis://localhost:6379/0"
+        CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    entrypoint: worker_celery.sh
+
+    volumes:
+        - static_volume:/core/Main/static
+    environment:
+      DEBUG: "True"
+      CELERY_BROKER_URL: "redis://localhost:6379/0"
+      CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
+
+    depends_on:
+      - server
+      - redis
 
   redis:
-    restart: unless-stopped
-      image: redis:6.0.16-alpine 
-      expose:
-        - 6379
+    image: redis:6.0.16-alpine 
+    expose:
+      - 6379
 
 volumes:
   static_volume: {}
