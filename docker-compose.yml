@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   server:
-  
+    container_name: BloodTestResultWeb
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,6 +18,7 @@ services:
         CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
 
   worker:
+    container_name: BloodTestResultCelery
     build:
       context: .
       dockerfile: Dockerfile
