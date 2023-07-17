@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker-compose up -d
+      run: docker-compose up 
     - name: runing test 1
       run: docker run --name BloodTestResultWeb -d Web_app
     - name: runing test 2
