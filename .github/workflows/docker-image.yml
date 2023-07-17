@@ -18,5 +18,4 @@ jobs:
       run: docker-compose up 
     - name: runing test 1
       run: docker run --name BloodTestResultWeb -d 
-    - name: runing test 2
-      run: docker run --name BloodTestResultCelery -d 
+
