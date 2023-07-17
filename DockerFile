@@ -1,6 +1,6 @@
 FROM python:3.10
 RUN apt-get update \
-  && apt-get -y install tesseract-ocr
+  && apt-get -y install tesseract-ocr && apt-get install ffmpeg libsm6 libxext6  -y
 
 ENV PIP_ROOT_USER_ACTION=ignore
 ENV PYTHONUNBUFFERED 1
