@@ -5,7 +5,7 @@ services:
     container_name: BloodTestResultWeb
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerFile
 
     entrypoint: server_django.sh
     volumes:
@@ -21,7 +21,7 @@ services:
     container_name: BloodTestResultCelery
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerFile
 
     entrypoint: worker_celery.sh
 
