@@ -43,7 +43,7 @@ def UploadAndProcessingImage(IMG_PATH):
                     append_all.append(cv2.vconcat([img[0], img[1]]))
         
         cv2.imwrite(f'{IMG_SAVE}/result_1.jpg', append_vertically[1])
-        print("Image Extract succesfully...")       
+        print("Image Extract succesfully...")    
         
 
     # Removing Image To Avoiding extra files
@@ -52,6 +52,8 @@ def UploadAndProcessingImage(IMG_PATH):
         if os.path.exists(file_path):
             os.remove(file_path)
             print("Images removed succesfully...")
+    
+    return True 
 
 
     
