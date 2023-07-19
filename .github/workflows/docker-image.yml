@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker-compose up 
+      run: docker compose -f docker-compose.yml up --build --exit-code-from BloodTestResultWeb
     - name: test one
-      run: docker --name BloodTestResultWeb -v
+      run: docker run --name BloodTestResultWeb -v 
