@@ -1,4 +1,4 @@
-# Blood-Test-Extract-Image
+# Blood-Test-Extract-Image ⚕️
 In this project, by taking a photo of the person's blood test results, and taking important features from the photo, extracting them and converting them to a csv file. We want to use this created file for disease predictions.
 
 
