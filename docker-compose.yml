@@ -37,7 +37,6 @@ services:
     image: redis:6.0.16-alpine 
     expose:
       - 6379
-
 volumes:
   static_volume: {}
 
